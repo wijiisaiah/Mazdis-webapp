@@ -8,11 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var user_billing_component_1 = require('./users/user-billing/user-billing.component');
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var map_component_1 = require("./map/map.component");
 var user_account_component_1 = require("./users/user-account/user-account.component");
 var user_authentication_component_1 = require("./users/user-authentication/user-authentication.component");
+var my_bookings_component_1 = require("./bookings/my-bookings/my-bookings.component");
+var auth_guard_1 = require("./shared/services/auth.guard");
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
     }
@@ -23,7 +26,9 @@ var AppRoutingModule = (function () {
                     { path: '', redirectTo: 'login', pathMatch: 'prefix' },
                     { path: 'login', component: user_authentication_component_1.UserAuthenticationComponent },
                     { path: 'account', component: user_account_component_1.UserAccountComponent },
-                    { path: 'map', component: map_component_1.MapComponent },
+                    { path: 'map', component: map_component_1.MapComponent, canActivate: [auth_guard_1.AuthGuard] },
+                    { path: 'my-bookings', component: my_bookings_component_1.MyBookingsComponent, canActivate: [auth_guard_1.AuthGuard] },
+                    { path: 'billing', component: user_billing_component_1.UserBillingComponent, canActivate: [auth_guard_1.AuthGuard] },
                     { path: '**', redirectTo: 'login' }
                 ])
             ],

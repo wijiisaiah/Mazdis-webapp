@@ -3,12 +3,14 @@
  * Created by Isaiah on 2017-02-02.
  */
 var Booking = (function () {
-    function Booking(parkingStation, date, startTime, endTime, totalCost) {
+    function Booking(parkingStation, date, startTime, startTimeMs, code, endTime, cost) {
         this.parkingStation = parkingStation;
         this.date = date;
         this.startTime = startTime;
+        this.startTimeMs = startTimeMs;
+        this.code = code;
         this.endTime = endTime;
-        this.totalCost = totalCost;
+        this.cost = cost;
     }
     return Booking;
 }());

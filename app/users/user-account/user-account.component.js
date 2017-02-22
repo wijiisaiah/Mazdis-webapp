@@ -15,25 +15,46 @@ var UserAccountComponent = (function () {
     function UserAccountComponent(uas) {
         this.uas = uas;
         this.currentUser = new user_1.User(null, null, null, null, null);
+        this.subscriptions = [];
     }
+    UserAccountComponent.prototype.ngOnDestroy = function () {
+        for (var _i = 0, _a = this.subscriptions; _i < _a.length; _i++) {
+            var subs = _a[_i];
+            subs.unsubscribe();
+        }
+    };
     UserAccountComponent.prototype.ngOnInit = function () {
         this.getCurrentUser();
     };
     UserAccountComponent.prototype.getCurrentUser = function () {
         var _this = this;
-        this.uas.getCurrentUser()
+        var temp = this.uas.getCurrentUser()
             .subscribe(function (user) {
             _this.currentUser = user;
-            console.log("Current user - ", _this.currentUser);
+            // console.log("Current user - ", this.currentUser);
         }, function (err) {
             console.error("Unable to get current user -", err);
         });
+        this.subscriptions.push(temp);
+    };
+    UserAccountComponent.prototype.editInfo = function () {
+        console.log("Editediteditediteditediteditediteditediteditedit");
+        document.getElementById('argName').readOnly = false;
+        document.getElementById('argEmail').readOnly = false;
+        document.getElementById('argAddress').readOnly = false;
+        document.getElementById('updateButton').hidden = false;
+        document.getElementById('editButton').hidden = true;
     };
     UserAccountComponent.prototype.updateUser = function () {
         this.currentUser.name = document.getElementById('argName').value;
         this.currentUser.email = document.getElementById('argEmail').value;
         this.currentUser.address = document.getElementById('argAddress').value;
         this.uas.updateUser(this.currentUser);
+        document.getElementById('argName').readOnly = true;
+        document.getElementById('argEmail').readOnly = true;
+        document.getElementById('argAddress').readOnly = true;
+        document.getElementById('updateButton').hidden = true;
+        document.getElementById('editButton').hidden = false;
     };
     UserAccountComponent = __decorate([
         core_1.Component({

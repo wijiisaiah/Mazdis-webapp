@@ -4,74 +4,188 @@
     position:absolute;
 }
 
+#menu-wrapper{
+    display: inline-block;
+    text-align: left;
+}
+i{
+    transition: 0.3s;
+}
+
+.fa-bicycle {
+    margin-right: 0.65rem;
+}
+
+.fa-user-circle {
+    margin-right: 1.2rem;
+}
+
+.fa-book {
+    margin-right: 1.3rem;
+}
+
 /* The Overlay (background) */
 .overlay {
     /* Height & width depends on how you want to reveal the overlay (see JS below) */
     height: 100%;
-    width: 0;
+    width: 0%;
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     left: 0;
     top: 0;
-    background-color: rgb(0,0,0); /* Black fallback color */
-    background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
+    background: linear-gradient(rgba(113, 175, 225, 0.9), rgb(46, 144, 255)); /* Standard syntax */
+    /*background-color: rgb(46, 144, 255); !* Black fallback color *!*/
+    /*background-color: rgba(113, 175, 225, 0.9); !* Black w/opacity *!*/
     overflow-x: hidden; /* Disable horizontal scroll */
     transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
 }
 
 /* Position the content inside the overlay */
 .overlay-content {
+    display: none;
     position: relative;
-    top: 25%; /* 25% from the top */
+    top: 20%; /* 25% from the top */
     width: 100%; /* 100% width */
-    text-align: center; /* Centered text/links */
-    margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
+    text-align: center;
+    margin-top: 10px; /* 30px top margin to avoid conflict with the close button on smaller screens */
+    font-size: 30px;
 }
 
 /* The navigation links inside the overlay */
 .overlay a {
     padding: 8px;
     text-decoration: none;
-    font-size: 36px;
-    color: #818181;
-    display: block; /* Display block instead of inline */
+    font-size: 20px;
+    display: inline; /* Display block instead of inline */
     transition: 0.3s; /* Transition effects on hover (color) */
+    cursor: pointer;
 }
 
 /* When you mouse over the navigation links, change their color */
 .overlay a:hover, .overlay a:focus {
+
+}
+.overlay .menu-section:hover {
+    color: #f1f1f1;
+
+}
+
+.overlay #signOut:hover{
     color: #f1f1f1;
 }
 
+.overlay #signOut:hover .fa {
+    margin-left: 2.5rem;
+}
+
 /* Position the close button (top right corner) */
+.overlay .menubtn {
+    position: absolute;
+    top: 20px;
+    left: 45px;
+    font-size: 20px;
+}
+
 .overlay .closebtn {
     position: absolute;
     top: 20px;
     right: 45px;
-    font-size: 60px;
+    font-size: 20px;
 }
 
-.menu-pieces {
-    /* Height & width depends on how you want to reveal the overlay (see JS below) */
-    height: 100%;
-    width: 0;
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
+.overlay #userName {
+    display: none;
+    position: relative;
+    text-align: center;
+    top: 15%;
+}
+
+.menu-container{
+    position:absolute;
     top: 0;
-    background-color: rgb(0,0,0); /* Black fallback color */
-    background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
-    overflow-x: hidden; /* Disable horizontal scroll */
+    right: 0;
+    width: 100%;
+    z-index: 1;
     transition: 0.5s;
+}
+#signOut{
+    display: none;
+    position:absolute;
+    bottom: 20px;
+    left: 10px;
+}
+
+.my-menu-icon{
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+.my-menu-icon:hover{
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.bar1, .bar2, .bar3 {
+    border-radius: 2px;
+    width: 35px;
+    height: 5px;
+    background-color: #333;
+    margin: 6px 0;
+    transition: 0.4s;
+}
+
+/* Rotate first bar */
+.change .bar1 {
+    -webkit-transform: rotate(-45deg) translate(-9px, 6px) ;
+    transform: rotate(-45deg) translate(-9px, 6px) ;
+}
+
+/* Fade out the second bar */
+.change .bar2 {
+    opacity: 0;
+}
+
+/* Rotate last bar */
+.change .bar3 {
+    -webkit-transform: rotate(45deg) translate(-8px, -8px) ;
+    transform: rotate(45deg) translate(-8px, -8px) ;
 }
 
 
 /* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
-@media screen and (max-height: 450px) {
+@media screen and (max-width: 600px) {
+
     .overlay a {font-size: 20px}
     .overlay .closebtn {
-        font-size: 40px;
+        font-size: 20px;
         top: 15px;
         right: 35px;
     }
+}
+
+/* Let's get this party started */
+::-webkit-scrollbar {
+    z-index: 1;
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(239, 239, 239, 0.8);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(0,0,0,0.4);
 }

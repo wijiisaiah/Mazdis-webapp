@@ -14,55 +14,111 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var user_service_1 = require("../shared/services/user.service");
 var user_1 = require("../shared/model/user");
+var booking_service_1 = require("../shared/services/booking.service");
+var router_1 = require("@angular/router");
+var menu_service_1 = require("../shared/services/menu.service");
 var MenuComponent = (function () {
-    function MenuComponent(uas) {
+    function MenuComponent(uas, BookingService, router, menuService) {
         this.uas = uas;
+        this.BookingService = BookingService;
+        this.router = router;
+        this.menuService = menuService;
         this.currentUser = new user_1.User(null, null, null, null, null);
+        this.currentBooking = null;
         this.userAccountHidden = true;
         this.userBookingsHidden = true;
+        this.userCurrentBookingHidden = true;
         this.userMenuHidden = false;
+        this.subscriptions = [];
     }
+    MenuComponent.prototype.ngOnDestroy = function () {
+        for (var _i = 0, _a = this.subscriptions; _i < _a.length; _i++) {
+            var subs = _a[_i];
+            subs.unsubscribe();
+        }
+        console.log('Menu Destroyed');
+    };
     MenuComponent.prototype.ngOnInit = function () {
         this.getCurrentUser();
+        this.getCurrentBooking();
+        this.menuService.isOpen = false;
+        if ((window.innerWidth <= 900) && (window.innerWidth >= 600)) {
+            this.menuService.menuSize = 45;
+        }
+        else if (window.innerWidth < 600) {
+            this.menuService.menuSize = 100;
+        }
+        else {
+            this.menuService.menuSize = menu_service_1.MenuService.defaultMenuSize;
+        }
     };
     /* Close when someone clicks on the "x" symbol inside the overlay */
-    MenuComponent.prototype.closeNav = function () {
-        document.getElementById("myNav").style.width = "0%";
-    };
-    MenuComponent.prototype.openNav = function () {
-        document.getElementById("myNav").style.width = "75%";
-    };
     MenuComponent.prototype.signOut = function () {
         this.uas.signOut();
     };
-    MenuComponent.prototype.getCurrentUser = function () {
+    MenuComponent.prototype.getCurrentBooking = function () {
         var _this = this;
-        this.uas.getCurrentUser()
-            .subscribe(function (user) {
-            _this.currentUser = user;
-            console.log("Current user - ", _this.currentUser);
+        var temp = this.BookingService.getCurrentBooking()
+            .subscribe(function (booking) {
+            _this.currentBooking = booking;
         }, function (err) {
             console.error("Unable to get current user -", err);
         });
+        this.subscriptions.push(temp);
     };
+    MenuComponent.prototype.getCurrentUser = function () {
+        var _this = this;
+        var temp = this.uas.getCurrentUser()
+            .subscribe(function (user) {
+            _this.currentUser = user;
+        }, function (err) {
+            console.error("Unable to get current user -", err);
+        });
+        this.subscriptions.push(temp);
+    };
+    // '', menu
     MenuComponent.prototype.replaceMenuContent = function (replaceThis, withThis) {
         switch (replaceThis) {
             case 'menu': {
                 this.userMenuHidden = true;
                 switch (withThis) {
                     case 'account':
-                        this.userAccountHidden = false;
+                        {
+                            this.userAccountHidden = false;
+                            this.menuService.setMenuSize(menu_service_1.MenuService.accountPageSize);
+                        }
                         return;
-                    case 'booking': this.userBookingsHidden = false;
+                    case 'booking':
+                        {
+                            this.menuService.setMenuSize(menu_service_1.MenuService.bookingPageSize);
+                            this.userBookingsHidden = false;
+                            console.log("call update here");
+                        }
+                        return;
+                    case 'current booking':
+                        {
+                            this.menuService.setMenuSize(menu_service_1.MenuService.accountPageSize);
+                            this.userCurrentBookingHidden = false;
+                            console.log("call update here");
+                        }
+                        return;
                 }
                 return;
             }
             default: {
+                this.menuService.setMenuSize(menu_service_1.MenuService.defaultMenuSize);
                 this.userAccountHidden = true;
                 this.userBookingsHidden = true;
+                this.userCurrentBookingHidden = true;
                 this.userMenuHidden = false;
             }
         }
+    };
+    MenuComponent.prototype.reRoute = function () {
+        this.router.navigate(['/login']);
+    };
+    MenuComponent.prototype.changeMenu = function () {
+        this.menuService.changeMenu();
     };
     MenuComponent = __decorate([
         core_1.Component({
@@ -71,7 +127,7 @@ var MenuComponent = (function () {
             templateUrl: 'menu.component.html',
             styleUrls: ['menu.component.css']
         }), 
-        __metadata('design:paramtypes', [user_service_1.UserService])
+        __metadata('design:paramtypes', [user_service_1.UserService, booking_service_1.BookingService, router_1.Router, menu_service_1.MenuService])
     ], MenuComponent);
     return MenuComponent;
 }());
